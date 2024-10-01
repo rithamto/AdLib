@@ -1,0 +1,524 @@
+{
+  "project_info": {
+    "project_number": "1032036500669",
+    "firebase_url": "https://innofyapp-319c7-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "innofyapp-319c7",
+    "storage_bucket": "innofyapp-319c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:18a5b6cb90937302f6e3d4",
+        "android_client_info": {
+          "package_name": "com.airhorn.funny.pranksounds.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:1408d745556a6632f6e3d4",
+        "android_client_info": {
+          "package_name": "com.bloodpressure.heartmonitor.bloodtracker.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:b832abd84cc53aa5f6e3d4",
+        "android_client_info": {
+          "package_name": "com.bloodpressureapp.bloodpressureapppro.healthmonitor.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:edef335df937174bf6e3d4",
+        "android_client_info": {
+          "package_name": "com.bmi.bmicalculator.tracker.calculator.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:54d87d6bd9f5ff6af6e3d4",
+        "android_client_info": {
+          "package_name": "com.broken.prank.brokenscreen.funny.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:cf7a61be0c21df6df6e3d4",
+        "android_client_info": {
+          "package_name": "com.by.clap.phone.finder.lostphone.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:1f73f083c2e8cf94f6e3d4",
+        "android_client_info": {
+          "package_name": "com.castto.tv.screenmirroring2.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:d660ccdd6c030cfdf6e3d4",
+        "android_client_info": {
+          "package_name": "com.cat.translator.talkingcat.prank.simulator.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:db6fd42c5fda3791f6e3d4",
+        "android_client_info": {
+          "package_name": "com.currency.currencyconverter.currencyexchangeapp.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:09305bebb023a746f6e3d4",
+        "android_client_info": {
+          "package_name": "com.dog.translator.talkingdog.prank.simulator.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:62fa69906159bfaef6e3d4",
+        "android_client_info": {
+          "package_name": "com.dreams.sleep.health.monitoring.tracker.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:9af939cdea9bb187f6e3d4",
+        "android_client_info": {
+          "package_name": "com.flashlight.flashalert.torch.light.led.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:c417130b8ec54a18f6e3d4",
+        "android_client_info": {
+          "package_name": "com.flashlight.strobelight.light.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:e0a0c7aabf027cbdf6e3d4",
+        "android_client_info": {
+          "package_name": "com.keyboard.fontskeyboard.fonts.emoji.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:4fc62a159b687017f6e3d4",
+        "android_client_info": {
+          "package_name": "com.maps.locator.gps.gpstracker.phone.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:eee5666ad10d78bff6e3d4",
+        "android_client_info": {
+          "package_name": "com.maps.phone.locationtracker.gpstracker.phonetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:e2426ce121c9e612f6e3d4",
+        "android_client_info": {
+          "package_name": "com.nlbnadslibrary"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:4557084a01800a67f6e3d4",
+        "android_client_info": {
+          "package_name": "com.notes.notepad.lists.keep.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:1322b4a5f900487df6e3d4",
+        "android_client_info": {
+          "package_name": "com.pdfscanner.documentscanner.photos.scanner.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:602b2cd684490c96f6e3d4",
+        "android_client_info": {
+          "package_name": "com.phone.number.gpstracker.familylocator.phonetracker.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:14593cd2453f5000f6e3d4",
+        "android_client_info": {
+          "package_name": "com.recover.data.mobile.datarecovery.deleted.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:39c51d05d3f4fe4cf6e3d4",
+        "android_client_info": {
+          "package_name": "com.ringtone.ringtonemaker.audiomaker.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:90be6893510d4025f6e3d4",
+        "android_client_info": {
+          "package_name": "com.share.anyshare.filetransfer.sharefiles.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:2bde9cc42a368857f6e3d4",
+        "android_client_info": {
+          "package_name": "com.stepcounter.stepstracker.pedometer.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:705ca36c86f75895f6e3d4",
+        "android_client_info": {
+          "package_name": "com.video.slowmotion.fastmotion.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:12668fd03f36a030f6e3d4",
+        "android_client_info": {
+          "package_name": "com.volume.equalizer.bass.booster.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032036500669:android:8d66bdc888b2e828f6e3d4",
+        "android_client_info": {
+          "package_name": "com.water.reminder.daily.waterdrinking.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiL79caOqluhVewg6IH9ljLOGADIazKDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

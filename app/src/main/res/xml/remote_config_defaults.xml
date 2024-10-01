@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<defaults>
+  <entry>
+    <key>test_banner_flugin</key>
+    <value>{"ad_unit_id":"ca-app-pub-3940256099942544/6300978111", "type":"standard","refresh_rate_sec":3000,"cb_fetch_interval_sec":5000}</value>
+  </entry>
+</defaults>

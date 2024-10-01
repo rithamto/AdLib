@@ -1,0 +1,4 @@
+rootProject.name = "nlbnAdsLibrary"
+include ':app'
+include ':ads'
+include ':sdk'
