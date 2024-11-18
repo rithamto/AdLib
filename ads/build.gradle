@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 33
         versionCode 108
         versionName "1.0.8"
@@ -32,8 +32,12 @@ android {
         mavenCentral()
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
     }
 }
 
@@ -71,8 +75,6 @@ dependencies {
 
 //fb sdk
     implementation 'com.facebook.android:facebook-android-sdk:16.2.0'
-
-
     implementation 'com.airbnb.android:lottie:6.1.0'
 
     //appsflyer
