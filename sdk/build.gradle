@@ -3,12 +3,11 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
-        minSdk 21
-        targetSdk 33
-
+        minSdk 26
+        targetSdk 35
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -23,6 +22,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+    namespace 'com.amazic.admobMeditationSdk'
 }
 
 dependencies {
