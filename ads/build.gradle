@@ -28,14 +28,16 @@ android {
         }
         mavenCentral()
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = "17"
     }
+
     namespace 'com.nlbn.ads'
 }
 
@@ -57,23 +59,23 @@ dependencies {
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
     implementation "com.android.billingclient:billing:7.1.1"
-    implementation 'com.google.android.gms:play-services-ads-identifier:18.1.0'
+    implementation 'com.google.android.gms:play-services-ads-identifier:18.2.0'
     implementation 'com.google.android.ump:user-messaging-platform:3.1.0'
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:33.6.0')
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-config'
 
-    implementation 'com.google.android.gms:play-services-ads:23.5.0'
+    implementation 'com.google.android.gms:play-services-ads:23.6.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.google.android.gms:play-services-basement:18.5.0'
     implementation 'com.google.code.gson:gson:2.10.1'
 
 //fb sdk
     implementation 'com.facebook.android:facebook-android-sdk:17.0.2'
-    implementation 'com.airbnb.android:lottie:6.1.0'
+    implementation 'com.airbnb.android:lottie:6.2.0'
 
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.13.0'

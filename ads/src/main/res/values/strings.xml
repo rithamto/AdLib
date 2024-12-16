@@ -1,7 +1,7 @@
 <resources>
 
     <string name="loading_ads">Loading Ads…</string>
-
+    <string name="offline_notification_text">Offline</string>
 
 
     <string name="ads_test_resume">ca-app-pub-3940256099942544/3419835294</string>
