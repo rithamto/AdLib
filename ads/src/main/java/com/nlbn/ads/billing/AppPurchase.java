@@ -16,7 +16,7 @@ import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.ProductDetailsResponseListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
-import com.google.firebase.crashlytics.internal.model.ImmutableList;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList;
 import com.nlbn.ads.callback.BillingListener;
 import com.nlbn.ads.callback.PurchaseListioner;
 import com.nlbn.ads.util.AppUtil;
@@ -452,7 +452,7 @@ public class AppPurchase {
         idPurchaseCurrent = productId;
         typeIap = TYPE_IAP.PURCHASE;
         ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList =
-            ImmutableList.from(
+            ImmutableList.of(
                 BillingFlowParams.ProductDetailsParams.newBuilder()
                     .setProductDetails(productDetails)
                     .build()
@@ -542,7 +542,7 @@ public class AppPurchase {
 
         String offerToken = offerDetails.get(0).getOfferToken();
         ImmutableList<BillingFlowParams.ProductDetailsParams> productDetailsParamsList =
-            ImmutableList.from(
+            ImmutableList.of(
                 BillingFlowParams.ProductDetailsParams.newBuilder()
                     .setProductDetails(productDetails)
                     .setOfferToken(offerToken)

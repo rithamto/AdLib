@@ -21,6 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     repositories {
         maven {
             //IronSource
@@ -30,8 +31,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -55,6 +56,7 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-process:2.8.7'
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.2'
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
@@ -78,10 +80,10 @@ dependencies {
     implementation 'com.airbnb.android:lottie:6.2.0'
 
     //appsflyer
-    implementation 'com.appsflyer:af-android-sdk:6.13.0'
+    implementation 'com.appsflyer:af-android-sdk:6.15.2'
     implementation 'com.appsflyer:adrevenue:6.9.1'
     //Adjust
-    implementation 'com.adjust.sdk:adjust-android:4.38.5'
+    implementation 'com.adjust.sdk:adjust-android:5.0.1'
     implementation 'com.android.installreferrer:installreferrer:2.2'
     implementation 'com.google.android.ump:user-messaging-platform:3.1.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'

@@ -31,13 +31,13 @@ public class Adjust implements Application.ActivityLifecycleCallbacks {
         if (BuildConfig.DEBUG) {
             config.setLogLevel(LogLevel.VERBOSE);
         }
-        com.adjust.sdk.Adjust.onCreate(config);
+        com.adjust.sdk.Adjust.initSdk(config);
         context.registerActivityLifecycleCallbacks(this);
     }
 
     public void trackAdRevenue(AdValue adValue) {
         if (adsApplication != null && adsApplication.enableAdjustTracking()) {
-            AdjustAdRevenue revenue = new AdjustAdRevenue(AdjustConfig.AD_REVENUE_ADMOB);
+            AdjustAdRevenue revenue = new AdjustAdRevenue(AdjustConfig.ENVIRONMENT_PRODUCTION);
             revenue.setRevenue((double) adValue.getValueMicros() / 1000000, adValue.getCurrencyCode());
             com.adjust.sdk.Adjust.trackAdRevenue(revenue);
         }
