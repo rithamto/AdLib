@@ -1478,11 +1478,10 @@ public class Admob {
                 VideoOptions videoOptions = new VideoOptions.Builder().setStartMuted(true).build();
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
-                    callback.onNativeAdLoaded(nativeAd);
-                    nativeAd.getResponseInfo();
                     nativeAd.setOnPaidEventListener(adValue -> {
                         callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
                     });
+                    callback.onNativeAdLoaded(nativeAd);
                 }).withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError error) {
