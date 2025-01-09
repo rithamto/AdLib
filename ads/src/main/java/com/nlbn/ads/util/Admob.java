@@ -1477,10 +1477,12 @@ public class Admob {
             if (isNetworkConnected()) {
                 VideoOptions videoOptions = new VideoOptions.Builder().setStartMuted(true).build();
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
-                AtomicReference<NativeAd> ad = new AtomicReference<>();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     callback.onNativeAdLoaded(nativeAd);
-                    ad.set(nativeAd);
+                    nativeAd.getResponseInfo();
+                    nativeAd.setOnPaidEventListener(adValue -> {
+                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                    });
                 }).withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError error) {
@@ -1512,9 +1514,6 @@ public class Admob {
                     public void onAdLoaded() {
                         super.onAdLoaded();
                         callback.onAdLoaded();
-                        ad.get().setOnPaidEventListener(adValue -> {
-                            callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
-                        });
                     }
 
                     @Override
