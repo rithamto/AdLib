@@ -1479,7 +1479,13 @@ public class Admob {
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     nativeAd.setOnPaidEventListener(adValue -> {
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        Log.d(TAG, "okela " + adValue.getValueMicros());
+                        try {
+                            callback.onEarnRevenue((long) adValue.getValueMicros(), adValue.getCurrencyCode());
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error in onEarnRevenue: " + e.getMessage());
+                            e.printStackTrace();
+                        }
                     });
                     callback.onNativeAdLoaded(nativeAd);
                 }).withAdListener(new AdListener() {
