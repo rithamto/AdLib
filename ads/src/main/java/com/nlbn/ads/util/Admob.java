@@ -1480,11 +1480,7 @@ public class Admob {
                 AtomicReference<NativeAd> ad = new AtomicReference<>();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     callback.onNativeAdLoaded(nativeAd);
-                    nativeAd.setOnPaidEventListener(adValue -> {
-                        Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
-                        FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                        ad.set(nativeAd);
-                    });
+                    ad.set(nativeAd);
                 }).withAdListener(new AdListener() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError error) {
