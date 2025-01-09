@@ -112,12 +112,10 @@ public class Admob {
     }
 
     public void initAdmob(Context context, List<String> testDeviceList) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            String processName = Application.getProcessName();
-            String packageName = context.getPackageName();
-            if (!packageName.equals(processName)) {
-                WebView.setDataDirectorySuffix(processName);
-            }
+        String processName = Application.getProcessName();
+        String packageName = context.getPackageName();
+        if (!packageName.equals(processName)) {
+            WebView.setDataDirectorySuffix(processName);
         }
         MobileAds.initialize(context, initializationStatus -> {
         });
@@ -127,12 +125,10 @@ public class Admob {
     }
 
     public void initAdmob(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            String processName = Application.getProcessName();
-            String packageName = context.getPackageName();
-            if (!packageName.equals(processName)) {
-                WebView.setDataDirectorySuffix(processName);
-            }
+        String processName = Application.getProcessName();
+        String packageName = context.getPackageName();
+        if (!packageName.equals(processName)) {
+            WebView.setDataDirectorySuffix(processName);
         }
 
         MobileAds.initialize(context, initializationStatus -> {
@@ -410,6 +406,12 @@ public class Admob {
                 }
 
                 @Override
+                public void onAdOpened() {
+                    super.onAdOpened();
+                    callback.onAdShow();
+                }
+
+                @Override
                 public void onAdLoaded() {
                     Log.d(TAG, "Banner adapter class name: " + Objects.requireNonNull(adView.getResponseInfo()).getMediationAdapterClassName());
                     containerShimmer.stopShimmer();
@@ -420,6 +422,7 @@ public class Admob {
                         FirebaseUtil.logPaidAdImpression(context, adValue, adView.getAdUnitId(), AdType.BANNER);
                         callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
                     });
+                    callback.onAdLoaded();
                 }
 
                 @Override
@@ -440,6 +443,10 @@ public class Admob {
             adView.loadAd(getAdRequest());
         } catch (Exception e) {
             e.printStackTrace();
+            containerShimmer.stopShimmer();
+            adContainer.setVisibility(View.GONE);
+            containerShimmer.setVisibility(View.GONE);
+            callback.onAdFailedToShow(new LoadAdError(3, "CANT_SHOW_ADS", "null", null, null));
         }
     }
 
@@ -1081,15 +1088,12 @@ public class Admob {
         }
 
         if (isShowInter) {
-            isTimeout = false;
-            interstitialAd = null;
             InterstitialAd.load(context, id, getAdRequest(), new InterstitialAdLoadCallback() {
                 @Override
                 public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                     if (adCallback != null) {
                         adCallback.onInterstitialLoad(interstitialAd);
                     }
-
                     //tracking adjust
                     interstitialAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
@@ -1312,6 +1316,12 @@ public class Admob {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 super.onAdLoaded(interstitialAd);
+                interstitialAd.setOnPaidEventListener(adValue -> {
+                    Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
+                    FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
+                    assert callback != null;
+                    callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                });
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
@@ -1513,8 +1523,6 @@ public class Admob {
                         super.onAdOpened();
                         callback.onAdShow();
                     }
-
-
                 }).withNativeAdOptions(adOptions).build();
                 adLoader.loadAd(getAdRequest());
             } else {
