@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 
-
 android {
     compileSdk 35
 
@@ -31,19 +30,25 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "18"
     }
 
     namespace 'com.nlbn.ads'
 }
 
-dependencies {
+tasks.withType(JavaCompile).configureEach {
+    options.fork = true
+    options.forkOptions.jvmArgs += [
+            '--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED'
+    ]
+}
 
+dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
@@ -73,7 +78,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:23.6.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.google.android.gms:play-services-basement:18.5.0'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
 
 //fb sdk
     implementation 'com.facebook.android:facebook-android-sdk:17.0.2'

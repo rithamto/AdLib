@@ -30,7 +30,9 @@ public class Fragment2 extends Fragment {
                 }
 
                 @Override
-                public void onAdFailedToLoad() {
+                public void onAdFailedToLoad(
+                        com.google.android.gms.ads.LoadAdError i
+                ) {
                     fr_ads1.removeAllViews();
                 }
             });

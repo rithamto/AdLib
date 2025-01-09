@@ -29,7 +29,9 @@ public class MainActivity3 extends AppCompatActivity {
             }
 
             @Override
-            public void onAdFailedToLoad() {
+            public void onAdFailedToLoad(
+                    com.google.android.gms.ads.LoadAdError i
+            ) {
                 fr_ads.removeAllViews();
             }
         });

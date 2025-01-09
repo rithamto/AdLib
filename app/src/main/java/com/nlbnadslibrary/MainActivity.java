@@ -199,7 +199,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAdFailedToLoad() {
+            public void onAdFailedToLoad(
+                    com.google.android.gms.ads.LoadAdError i
+            ) {
                 native_ads.setVisibility(View.GONE);
             }
         });
