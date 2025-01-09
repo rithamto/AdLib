@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -66,6 +65,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Admob {
     private static Admob INSTANCE;
@@ -175,10 +175,10 @@ public class Admob {
         this.logLogTimeShowAds = logLogTimeShowAds;
     }
 
-    /**=================================Banner ======================================/
- /**
-      * Load quảng cáo Banner Trong Activity
-      *
+    /**
+     * =================================Banner ======================================/
+     * /**
+     * Load quảng cáo Banner Trong Activity
      */
     public void loadBanner(final Activity mActivity, String id) {
         final FrameLayout adContainer = mActivity.findViewById(R.id.banner_container);
@@ -1476,14 +1476,14 @@ public class Admob {
         if (isShowNative) {
             if (isNetworkConnected()) {
                 VideoOptions videoOptions = new VideoOptions.Builder().setStartMuted(true).build();
-
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
+                AtomicReference<NativeAd> ad = new AtomicReference<>();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     callback.onNativeAdLoaded(nativeAd);
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        ad.set(nativeAd);
                     });
                 }).withAdListener(new AdListener() {
                     @Override
@@ -1516,6 +1516,9 @@ public class Admob {
                     public void onAdLoaded() {
                         super.onAdLoaded();
                         callback.onAdLoaded();
+                        ad.get().setOnPaidEventListener(adValue -> {
+                            callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        });
                     }
 
                     @Override
