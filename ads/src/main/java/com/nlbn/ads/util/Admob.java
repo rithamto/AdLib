@@ -89,7 +89,7 @@ public class Admob {
     InterstitialAd mInterstitialSplash;
     InterstitialAd interstitialAd;
     private boolean disableAdResumeWhenClickAds = false;
-    private boolean isShowToastOnPaidEvent = false;
+    private static boolean isShowToastOnPaidEvent = false;
     public static final String BANNER_INLINE_SMALL_STYLE = "BANNER_INLINE_SMALL_STYLE";
     public static final String BANNER_INLINE_LARGE_STYLE = "BANNER_INLINE_LARGE_STYLE";
     private static int MAX_SMALL_INLINE_BANNER_HEIGHT = 50;
@@ -110,6 +110,10 @@ public class Admob {
             INSTANCE = new Admob();
         }
         return INSTANCE;
+    }
+
+    public static void activeToastRevenue() {
+        isShowToastOnPaidEvent = true;
     }
 
     public void initAdmob(Context context, List<String> testDeviceList) {
