@@ -492,7 +492,7 @@ public class Admob {
                     adContainer.setVisibility(View.VISIBLE);
                     adView.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
-                        if(isShowToastOnPaidEvent){
+                        if (isShowToastOnPaidEvent) {
                             Toast.makeText(context, "OnPaidEvent BANNER:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                         }
                         FirebaseUtil.logPaidAdImpression(context, adValue, adView.getAdUnitId(), AdType.BANNER);
@@ -760,7 +760,7 @@ public class Admob {
                                 interstitialAd.setOnPaidEventListener(adValue -> {
                                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                                     FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
-                                    if(isShowToastOnPaidEvent){
+                                    if (isShowToastOnPaidEvent) {
                                         Toast.makeText(context, "OnPaidEvent inter:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                                     }
                                     adListener.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -1491,8 +1491,15 @@ public class Admob {
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     nativeAd.setOnPaidEventListener(adValue -> {
-                        if(isShowToastOnPaidEvent){
-                            Toast.makeText(context, "OnPaidEvent native:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
+                        if (isShowToastOnPaidEvent) {
+                            if (context instanceof Activity) {
+                                ((Activity) context).runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(context, "OnPaidEvent NATIVE:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         }
                         callback.onEarnRevenue((long) adValue.getValueMicros(), adValue.getCurrencyCode());
                     });
@@ -1560,7 +1567,7 @@ public class Admob {
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                        if(isShowToastOnPaidEvent){
+                        if (isShowToastOnPaidEvent) {
                             Toast.makeText(context, "OnPaidEvent native:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                         }
                         callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -1610,7 +1617,7 @@ public class Admob {
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                        if(isShowToastOnPaidEvent){
+                        if (isShowToastOnPaidEvent) {
                             Toast.makeText(context, "OnPaidEvent native:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                         }
                         callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -1669,7 +1676,7 @@ public class Admob {
                         nativeAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                             FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                            if(isShowToastOnPaidEvent){
+                            if (isShowToastOnPaidEvent) {
                                 Toast.makeText(context, "OnPaidEvent native:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                             }
                             callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -1728,7 +1735,7 @@ public class Admob {
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, listID.get(0), AdType.NATIVE);
-                        if(isShowToastOnPaidEvent){
+                        if (isShowToastOnPaidEvent) {
                             Toast.makeText(context, "OnPaidEvent native:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                         }
                         callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -1836,7 +1843,7 @@ public class Admob {
                 frameLayout.addView(adView);
                 nativeAd.setOnPaidEventListener(adValue -> {
                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
-                    if(isShowToastOnPaidEvent){
+                    if (isShowToastOnPaidEvent) {
                         Toast.makeText(context, "OnPaidEvent NATIVE:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                     }
                     FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
