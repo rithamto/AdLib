@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         native_ads = findViewById(R.id.native_ads);
         // Admob.getInstance().loadCollapsibleBanner(this, getString(R.string.admod_banner_id), BannerGravity.bottom);
-        Admob.getInstance().initRewardAds(this, getString(R.string.admod_app_reward_id));
+        Admob.getInstance().initRewardAds(this, getString(R.string.admod_app_reward_id),new RewardCallback(){
+
+        })
 
 
 
@@ -102,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onAdFailedToShow(int codeError) {
+                    public void onAdFailedToLoad(LoadAdError i) {
+                        super.onAdFailedToLoad(i);
                         Toast.makeText(MainActivity.this, "Loa ads err", Toast.LENGTH_SHORT).show();
                     }
                 });

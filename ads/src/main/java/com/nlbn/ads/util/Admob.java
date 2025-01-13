@@ -1398,9 +1398,8 @@ public class Admob {
             return;
         }
         if (rewardedAd == null) {
-            initRewardAds(context, rewardedId);
-            adCallback.onAdFailedToShow(0);
-            return;
+            initRewardAds(context, rewardedId, adCallback);
+            adCallback.onAdFailedToShow(new LoadAdError(3, "CANT_SHOW_ADS", "null", null, null));
         } else {
             Admob.this.rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                 @Override
@@ -1411,13 +1410,14 @@ public class Admob {
                     if (AppOpenManager.getInstance().isInitialized()) {
                         AppOpenManager.getInstance().enableAppResume();
                     }
-
+                    assert adCallback != null;
+                    adCallback.onAdClosed();
                 }
 
                 @Override
                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                     super.onAdFailedToShowFullScreenContent(adError);
-                    if (adCallback != null) adCallback.onAdFailedToShow(adError.getCode());
+                    if (adCallback != null) adCallback.onAdFailedToShow(new LoadAdError(3, "CANT_SHOW_ADS", "null", null, null));
                 }
 
                 @Override
@@ -1426,7 +1426,7 @@ public class Admob {
                     if (AppOpenManager.getInstance().isInitialized()) {
                         AppOpenManager.getInstance().disableAppResume();
                     }
-                    initRewardAds(context, rewardedId);
+                    initRewardAds(context, rewardedId, adCallback);
                     rewardedAd = null;
                 }
 
@@ -1435,6 +1435,7 @@ public class Admob {
                     if (disableAdResumeWhenClickAds)
                         AppOpenManager.getInstance().disableAdResumeByClickAction();
                     FirebaseUtil.logClickAdsEvent(context, rewardedAd.getAdUnitId());
+                    adCallback.onAdClicked();
                 }
             });
             rewardedAd.show(context, new OnUserEarnedRewardListener() {
@@ -1442,14 +1443,13 @@ public class Admob {
                 public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
                     if (adCallback != null) {
                         adCallback.onEarnedReward(rewardItem);
-
                     }
                 }
             });
         }
     }
 
-    public void initRewardAds(Context context, String id) {
+    public void initRewardAds(Context context, String id, RewardCallback callback) {
         if (AppPurchase.getInstance().isPurchased(context) || !isShowAllAds) {
             return;
         }
@@ -1459,7 +1459,10 @@ public class Admob {
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 Admob.this.rewardedAd = rewardedAd;
                 Admob.this.rewardedAd.setOnPaidEventListener(adValue -> {
-
+                    if (isShowToastOnPaidEvent) {
+                        Toast.makeText(context, "OnPaidEvent Reward:" + adValue.getValueMicros(), Toast.LENGTH_SHORT).show();
+                    }
+                    callback.onEarnRevenue(adValue.getValueMicros(), adValue.getCurrencyCode());
                     Log.d(TAG, "OnPaidEvent Reward:" + adValue.getValueMicros());
                     FirebaseUtil.logPaidAdImpression(context, adValue, rewardedAd.getAdUnitId(), AdType.REWARDED);
                 });
@@ -1469,6 +1472,7 @@ public class Admob {
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
                 Log.e(TAG, "RewardedAd onAdFailedToLoad: " + loadAdError.getMessage());
+                callback.onAdFailedToLoad(loadAdError);
             }
         });
     }
