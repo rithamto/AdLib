@@ -1410,8 +1410,6 @@ public class Admob {
                     if (AppOpenManager.getInstance().isInitialized()) {
                         AppOpenManager.getInstance().enableAppResume();
                     }
-                    assert adCallback != null;
-                    adCallback.onAdClosed();
                 }
 
                 @Override
