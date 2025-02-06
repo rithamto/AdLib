@@ -1530,6 +1530,68 @@ public class Admob {
         }
     }
 
+    public void loadNativeAdSplash(Context context, String id, final NativeCallback callback) {
+        if (AppPurchase.getInstance().isPurchased(context) || !isShowAllAds) {
+            callback.onAdFailedToLoad(new LoadAdError(3, "ERROR_CODE_NETWORK_ERROR", "null", null, null));
+            return;
+        }
+        if (isShowNative) {
+            if (isNetworkConnected()) {
+                VideoOptions videoOptions = new VideoOptions.Builder().setStartMuted(true).build();
+                NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
+                AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
+                    nativeAd.setOnPaidEventListener(adValue -> {
+                        callback.onEarnRevenue((long) adValue.getValueMicros(), adValue.getCurrencyCode());
+                    });
+                    callback.onNativeAdLoaded(nativeAd);
+                }).withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError error) {
+                        Log.e(TAG, "NativeAd onAdFailedToLoad: " + error.getMessage());
+                        callback.onAdFailedToLoad(error);
+                    }
+
+                    @Override
+                    public void onAdClicked() {
+                        super.onAdClicked();
+                        if (disableAdResumeWhenClickAds)
+                            AppOpenManager.getInstance().disableAdResumeByClickAction();
+                        FirebaseUtil.logClickAdsEvent(context, id);
+                        if (timeLimitAds > 1000) {
+                            setTimeLimitNative();
+                            if (callback != null) {
+                                callback.onAdFailedToLoad(new LoadAdError(3, "ERROR_CODE_NETWORK_ERROR", "null", null, null));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onAdImpression() {
+                        super.onAdImpression();
+                        callback.onAdImpression();
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        callback.onAdLoaded();
+                    }
+
+                    @Override
+                    public void onAdOpened() {
+                        super.onAdOpened();
+                        callback.onAdShow();
+                    }
+                }).withNativeAdOptions(adOptions).build();
+                adLoader.loadAd(getAdRequest());
+            } else {
+                callback.onAdFailedToShow(new LoadAdError(3, "ERROR_CODE_NETWORK_ERROR", "null", null, null));
+            }
+        } else {
+            callback.onAdFailedToLoad(new LoadAdError(3, "ERROR_CODE_NETWORK_ERROR", "null", null, null));
+        }
+    }
+
     public void loadNativeAd(Context context, String id, final NativeCallback callback, int adChoicesPlacement) {
         if (AppPurchase.getInstance().isPurchased(context) || !isShowAllAds || !isNetworkConnected()) {
             callback.onAdFailedToLoad(new LoadAdError(3, "ERROR_CODE_NETWORK_ERROR", "null", null, null));
