@@ -55,7 +55,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private int splashTimeout = 0;
 
     private boolean isInitialized = false;// on  - off ad resume on app
-    private boolean isAppResumeEnabled = true;
+    public boolean isAppResumeEnabled = true;
     private boolean isInterstitialShowing = false;
     private boolean isShowingAdResume = false;
     private boolean enableScreenContentCallback = false; // default =  true when use splash & false after show splash
