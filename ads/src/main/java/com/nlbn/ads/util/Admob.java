@@ -823,12 +823,10 @@ public class Admob {
                         }
                         if (adListener != null) {
                             if (!openActivityAfterShowInterAds) {
-                                adListener.onAdClosed();
                                 adListener.onNextAction();
                             } else {
-                                adListener.onAdClosedByUser();
+                                adListener.onAdClosed();
                             }
-
                             if (dialog != null) {
                                 dialog.dismiss();
                             }
@@ -876,8 +874,7 @@ public class Admob {
                             dialog.show();
                         } catch (Exception e) {
                             assert adListener != null;
-                            adListener.onAdClosed();
-                            adListener.onNextAction();
+                            adListener.onAdFailedToShow(new LoadAdError(3, "FAILED_TO_SHOW", "null", null, null));
                             return;
                         }
                     } catch (Exception e) {
@@ -975,10 +972,9 @@ public class Admob {
                 if (dialog != null && dialog.isShowing()) dialog.dismiss();
                 if (adListener != null) {
                     if (!openActivityAfterShowInterAds) {
-                        adListener.onAdClosed();
                         adListener.onNextAction();
                     } else {
-                        adListener.onAdClosedByUser();
+                        adListener.onAdClosed();
                     }
 
                 }
@@ -1137,13 +1133,11 @@ public class Admob {
         Helper.setupAdmodData(context);
         if (AppPurchase.getInstance().isPurchased(context) || !isShowAllAds) {
             callback.onAdClosed();
-            callback.onNextAction();
             return;
         }
         if (mInterstitialAd == null) {
             if (callback != null) {
                 callback.onAdClosed();
-                callback.onNextAction();
             }
             return;
         }
@@ -1158,10 +1152,9 @@ public class Admob {
                 }
                 if (callback != null) {
                     if (!openActivityAfterShowInterAds) {
-                        callback.onAdClosed();
                         callback.onNextAction();
                     } else {
-                        callback.onAdClosedByUser();
+                        callback.onAdClosed();
                     }
 
                     if (dialog != null) {

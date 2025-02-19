@@ -8,12 +8,9 @@ public class InterCallback {
     public void onAdClosed() {}
     public void onAdFailedToLoad(LoadAdError i) {}
     public void onAdFailedToShow(AdError adError) {}
-    public void onAdLeftApplication() {}
     public void onAdLoaded() {}
     public void onInterstitialLoad(InterstitialAd interstitialAd) {}
     public void onAdClicked() {}
-    public void onAdImpression() {}
-    public void onAdClosedByUser(){}
     public void onNextAction(){}
     public void onEarnRevenue(long Revenue, String Currency){}
 }
