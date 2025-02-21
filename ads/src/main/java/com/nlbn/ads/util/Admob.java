@@ -423,6 +423,7 @@ public class Admob {
                     containerShimmer.setVisibility(View.GONE);
                     adContainer.setVisibility(View.VISIBLE);
                     adView.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(mActivity, adValue, "ads_banner", id);
                         if (isShowToastOnPaidEvent) {
                             Toast.makeText(context, "OnPaidEvent banner:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                         }
@@ -491,6 +492,7 @@ public class Admob {
                     containerShimmer.setVisibility(View.GONE);
                     adContainer.setVisibility(View.VISIBLE);
                     adView.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(mActivity, adValue, "ads_banner_collapsible", id);
                         Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
                         if (isShowToastOnPaidEvent) {
                             Toast.makeText(context, "OnPaidEvent BANNER:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
@@ -649,6 +651,7 @@ public class Admob {
                         }
                         if (interstitialAd != null) {
                             interstitialAd.setOnPaidEventListener(adValue -> {
+                                AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_banner", id);
                                 Log.d(TAG, "OnPaidEvent loadInterstitialAds:" + adValue.getValueMicros());
                                 FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.BANNER);
                             });
@@ -758,6 +761,7 @@ public class Admob {
                                 onShowSplash((Activity) context, adListener);
                                 //tracking adjust
                                 interstitialAd.setOnPaidEventListener(adValue -> {
+                                    AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_interstitial", listID.get(0));
                                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                                     FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
                                     if (isShowToastOnPaidEvent) {
@@ -799,6 +803,7 @@ public class Admob {
                 adListener.onNextAction();
             } else {
                 mInterstitialSplash.setOnPaidEventListener(adValue -> {
+                    AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_interstitial_splash", interSplash.getAdUnitId());
                     Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
                     FirebaseUtil.logPaidAdImpression(context, adValue, mInterstitialSplash.getAdUnitId(), AdType.INTERSTITIAL);
                     adListener.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -949,6 +954,7 @@ public class Admob {
             return;
         }
         mInterstitialSplash.setOnPaidEventListener(adValue -> {
+            AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_interstitial_splash", mInterstitialSplash.getAdUnitId());
             Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
             FirebaseUtil.logPaidAdImpression(context, adValue, mInterstitialSplash.getAdUnitId(), AdType.INTERSTITIAL);
             adListener.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
@@ -1107,6 +1113,7 @@ public class Admob {
                     }
                     //tracking adjust
                     interstitialAd.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_interstitial", interstitialAd.getAdUnitId());
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
                         assert adCallback != null;
@@ -1328,6 +1335,7 @@ public class Admob {
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 super.onAdLoaded(interstitialAd);
                 interstitialAd.setOnPaidEventListener(adValue -> {
+                    AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_interstitial", interstitialAd.getAdUnitId());
                     if (isShowToastOnPaidEvent) {
                         Toast.makeText(context, "OnPaidEvent inter:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();
                     }
@@ -1457,6 +1465,7 @@ public class Admob {
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 Admob.this.rewardedAd = rewardedAd;
                 Admob.this.rewardedAd.setOnPaidEventListener(adValue -> {
+                    AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_reward", rewardedAd.getAdUnitId());
                     if (isShowToastOnPaidEvent) {
                         Toast.makeText(context, "OnPaidEvent Reward:" + adValue.getValueMicros(), Toast.LENGTH_SHORT).show();
                     }
@@ -1493,6 +1502,7 @@ public class Admob {
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     nativeAd.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_native", id);
                         if (isShowToastOnPaidEvent) {
                             if (context instanceof Activity) {
                                 ((Activity) context).runOnUiThread(new Runnable() {
@@ -1567,6 +1577,7 @@ public class Admob {
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     callback.onNativeAdLoaded(nativeAd);
                     nativeAd.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_native", id);
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
                         if (isShowToastOnPaidEvent) {
@@ -1617,6 +1628,7 @@ public class Admob {
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     callback.onNativeAdLoaded(nativeAd);
                     nativeAd.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_native", id);
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
                         if (isShowToastOnPaidEvent) {
@@ -1676,6 +1688,7 @@ public class Admob {
                         }
                         callback.onNativeAdLoaded(nativeAd);
                         nativeAd.setOnPaidEventListener(adValue -> {
+                            AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_native", id);
                             Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                             FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
                             if (isShowToastOnPaidEvent) {
@@ -1735,6 +1748,7 @@ public class Admob {
                     }
                     callback.onNativeAdLoaded(nativeAd);
                     nativeAd.setOnPaidEventListener(adValue -> {
+                        AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_native", listID.get(0));
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, listID.get(0), AdType.NATIVE);
                         if (isShowToastOnPaidEvent) {
@@ -1844,6 +1858,7 @@ public class Admob {
                 frameLayout.removeAllViews();
                 frameLayout.addView(adView);
                 nativeAd.setOnPaidEventListener(adValue -> {
+                    AppsFlyer.getInstance().logFromFacebook(context, adValue, "ads_native", id);
                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                     if (isShowToastOnPaidEvent) {
                         Toast.makeText(context, "OnPaidEvent NATIVE:" + adValue.getValueMicros() + " " + adValue.getCurrencyCode(), Toast.LENGTH_SHORT).show();

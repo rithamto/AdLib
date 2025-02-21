@@ -2,15 +2,21 @@ package com.nlbn.ads.util;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
 import com.appsflyer.adrevenue.AppsFlyerAdRevenue;
 import com.appsflyer.adrevenue.adnetworks.generic.MediationNetwork;
 import com.appsflyer.adrevenue.adnetworks.generic.Scheme;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.ads.AdValue;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
@@ -77,4 +83,32 @@ public class AppsFlyer {
             AppsFlyerLib.getInstance().logEvent(context, "ad_impression", customParams);
         }
     }
+
+    public  void logFromFacebook(Context context, @NonNull AdValue adValue, @NonNull String adFormat, @NonNull String ad_Source_id) {
+        long microsValue = adValue.getValueMicros();
+
+        try {
+            BigDecimal valueMicros = new BigDecimal(microsValue);
+            BigDecimal valueInCurrency = valueMicros.divide(new         BigDecimal(1_000_000),6, RoundingMode.HALF_UP);
+            Bundle params = new Bundle();
+            params.putDouble("_ValueToSum",
+                    valueInCurrency.doubleValue());
+            params.putDouble("value", valueInCurrency.doubleValue());
+            params.putInt("precision", adValue.getPrecisionType());
+            params.putString("currency", adValue.getCurrencyCode());
+            params.putString("adFormat", adFormat);
+            params.putString("adSourceId", ad_Source_id);
+
+
+            AppEventsLogger facebookLogger =  AppEventsLogger.newLogger(context);
+            facebookLogger.logPurchase(
+                    valueInCurrency,
+                    Currency.getInstance(adValue.getCurrencyCode()),
+                    params
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
