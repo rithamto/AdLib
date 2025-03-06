@@ -24,7 +24,6 @@ public class FirebaseUtil {
         Log.e("logPaidAdImpression", adValue.getCurrencyCode() + "");
         AppsFlyer.getInstance().pushTrackEventAdmob(adValue, adUnitId, adType.toString());
         AppsFlyer.getInstance().logRevenueEvent(context, adValue);
-        Adjust.getInstance().trackAdRevenue(adValue);
         logEventWithAds(context, (float) adValue.getValueMicros(), adValue.getPrecisionType(), adUnitId, adType.toString(), adValue.getCurrencyCode());
     }
 

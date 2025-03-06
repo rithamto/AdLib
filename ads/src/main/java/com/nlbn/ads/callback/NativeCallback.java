@@ -17,5 +17,5 @@ public class NativeCallback {
 
     public void onAdImpression() {}
 
-    public void onEarnRevenue(long Revenue, String Currency){}
+    public void onEarnRevenue(double revenue, String currency){}
 }

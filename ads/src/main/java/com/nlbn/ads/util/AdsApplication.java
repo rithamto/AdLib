@@ -31,6 +31,10 @@ public abstract class AdsApplication extends Application {
         return false;
     }
 
+    protected String getAdjustRevenueEventToken() {
+        return "";
+    }
+
     public abstract List<String> getListTestDeviceId();
 
     public abstract String getResumeAdId();

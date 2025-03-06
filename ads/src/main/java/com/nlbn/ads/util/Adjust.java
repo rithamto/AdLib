@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.adjust.sdk.AdjustAdRevenue;
 import com.adjust.sdk.AdjustConfig;
+import com.adjust.sdk.AdjustEvent;
 import com.adjust.sdk.BuildConfig;
 import com.adjust.sdk.LogLevel;
 import com.google.android.gms.ads.AdValue;
@@ -35,12 +36,21 @@ public class Adjust implements Application.ActivityLifecycleCallbacks {
         context.registerActivityLifecycleCallbacks(this);
     }
 
-    public void trackAdRevenue(AdValue adValue) {
-        if (adsApplication != null && adsApplication.enableAdjustTracking()) {
-            AdjustAdRevenue revenue = new AdjustAdRevenue(AdjustConfig.ENVIRONMENT_PRODUCTION);
-            revenue.setRevenue((double) adValue.getValueMicros() / 1000000, adValue.getCurrencyCode());
-            com.adjust.sdk.Adjust.trackAdRevenue(revenue);
-        }
+    public void trackAdRevenue(double revenue, String currency) {
+        if (adsApplication == null) return;
+        if (!adsApplication.enableAdjustTracking()) return;
+
+        /// Track ad revenue
+        AdjustAdRevenue adRevenue = new AdjustAdRevenue("admob_sdk");
+        adRevenue.setRevenue(revenue, currency);
+        com.adjust.sdk.Adjust.trackAdRevenue(adRevenue);
+
+        /// Track event revenue
+        String revenueEventToken = adsApplication.getAdjustRevenueEventToken();
+        if (revenueEventToken == null || revenueEventToken.isEmpty()) return;
+        AdjustEvent adjustEvent = new AdjustEvent(revenueEventToken);
+        adjustEvent.setRevenue(revenue, currency);
+        com.adjust.sdk.Adjust.trackEvent(adjustEvent);
     }
 
     @Override

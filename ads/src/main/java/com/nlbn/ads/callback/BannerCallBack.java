@@ -17,5 +17,5 @@ public class BannerCallBack {
 
     public void onAdImpression() {}
 
-    public void onEarnRevenue(long Revenue, String currency) {}
+    public void onEarnRevenue(double revenue, String currency) {}
 }

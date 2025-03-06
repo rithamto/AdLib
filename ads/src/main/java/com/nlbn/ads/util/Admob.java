@@ -420,7 +420,10 @@ public class Admob {
                     adView.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, adView.getAdUnitId(), AdType.BANNER);
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
+                        callback.onEarnRevenue(revenue, currency);
                     });
                     callback.onAdLoaded();
                 }
@@ -488,6 +491,9 @@ public class Admob {
                         Log.d(TAG, "OnPaidEvent banner:" + adValue.getValueMicros());
 
                         FirebaseUtil.logPaidAdImpression(context, adValue, adView.getAdUnitId(), AdType.BANNER);
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
                     });
 
                 }
@@ -643,6 +649,10 @@ public class Admob {
                             interstitialAd.setOnPaidEventListener(adValue -> {
                                 Log.d(TAG, "OnPaidEvent loadInterstitialAds:" + adValue.getValueMicros());
                                 FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.BANNER);
+                                double revenue = adValue.getValueMicros() / 1000000.0;
+                                String currency = adValue.getCurrencyCode();
+                                Adjust.getInstance().trackAdRevenue(revenue, currency);
+                                adListener.onEarnRevenue(revenue, currency);
                             });
                         }
                     }
@@ -698,6 +708,17 @@ public class Admob {
                             super.onAdLoaded(interstitialAd);
                             mInterstitialSplash = interstitialAd;
                             AppOpenManager.getInstance().disableAppResume();
+                            mInterstitialSplash.setOnPaidEventListener(
+                                    adValue -> {
+                                        FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
+                                        double revenue = adValue.getValueMicros() / 1000000.0;
+                                        String currency = adValue.getCurrencyCode();
+                                        Adjust.getInstance().trackAdRevenue(revenue, currency);
+                                        assert adListener != null;
+                                        adListener.onEarnRevenue(revenue, currency);
+                                    }
+                            );
+
                             onShowSplash((Activity) context, adListener);
                         }
 
@@ -752,7 +773,11 @@ public class Admob {
                                 interstitialAd.setOnPaidEventListener(adValue -> {
                                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                                     FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
-                                    adListener.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                                    double revenue = adValue.getValueMicros() / 1000000.0;
+                                    String currency = adValue.getCurrencyCode();
+                                    Adjust.getInstance().trackAdRevenue(revenue, currency);
+                                    assert adListener != null;
+                                    adListener.onEarnRevenue(revenue, currency);
                                 });
                             }
 
@@ -790,7 +815,10 @@ public class Admob {
                 mInterstitialSplash.setOnPaidEventListener(adValue -> {
                     Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
                     FirebaseUtil.logPaidAdImpression(context, adValue, mInterstitialSplash.getAdUnitId(), AdType.INTERSTITIAL);
-                    adListener.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                    double revenue = adValue.getValueMicros() / 1000000.0;
+                    String currency = adValue.getCurrencyCode();
+                    Adjust.getInstance().trackAdRevenue(revenue, currency);
+                    adListener.onEarnRevenue(revenue, currency);
                 });
 
                 if (handlerTimeout != null && rdTimeout != null) {
@@ -940,7 +968,10 @@ public class Admob {
         mInterstitialSplash.setOnPaidEventListener(adValue -> {
             Log.d(TAG, "OnPaidEvent splash:" + adValue.getValueMicros());
             FirebaseUtil.logPaidAdImpression(context, adValue, mInterstitialSplash.getAdUnitId(), AdType.INTERSTITIAL);
-            adListener.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+            double revenue = adValue.getValueMicros() / 1000000.0;
+            String currency = adValue.getCurrencyCode();
+            Adjust.getInstance().trackAdRevenue(revenue, currency);
+            adListener.onEarnRevenue(revenue, currency);
         });
 
         if (handlerTimeout != null && rdTimeout != null) {
@@ -1098,8 +1129,11 @@ public class Admob {
                     interstitialAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
                         assert adCallback != null;
-                        adCallback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        adCallback.onEarnRevenue(revenue, currency);
                     });
                 }
 
@@ -1319,8 +1353,11 @@ public class Admob {
                 interstitialAd.setOnPaidEventListener(adValue -> {
                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                     FirebaseUtil.logPaidAdImpression(context, adValue, interstitialAd.getAdUnitId(), AdType.INTERSTITIAL);
+                    double revenue = adValue.getValueMicros() / 1000000.0;
+                    String currency = adValue.getCurrencyCode();
+                    Adjust.getInstance().trackAdRevenue(revenue, currency);
                     assert callback != null;
-                    callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                    callback.onEarnRevenue(revenue, currency);
                 });
                 new Handler(Looper.getMainLooper()).postDelayed(() -> {
                     interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -1450,6 +1487,9 @@ public class Admob {
 
                     Log.d(TAG, "OnPaidEvent Reward:" + adValue.getValueMicros());
                     FirebaseUtil.logPaidAdImpression(context, adValue, rewardedAd.getAdUnitId(), AdType.REWARDED);
+                    double revenue = adValue.getValueMicros() / 1000000.0;
+                    String currency = adValue.getCurrencyCode();
+                    Adjust.getInstance().trackAdRevenue(revenue, currency);
                 });
             }
 
@@ -1479,7 +1519,11 @@ public class Admob {
                 NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
                 AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                     nativeAd.setOnPaidEventListener(adValue -> {
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), adValue.getCurrencyCode());
+                        FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
+                        callback.onEarnRevenue(revenue, currency);
                     });
                     callback.onNativeAdLoaded(nativeAd);
                 }).withAdListener(new AdListener() {
@@ -1540,7 +1584,11 @@ public class Admob {
             NativeAdOptions adOptions = new NativeAdOptions.Builder().setVideoOptions(videoOptions).build();
             AdLoader adLoader = new AdLoader.Builder(context, id).forNativeAd(nativeAd -> {
                 nativeAd.setOnPaidEventListener(adValue -> {
-                    callback.onEarnRevenue((long) adValue.getValueMicros(), adValue.getCurrencyCode());
+                    FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
+                    double revenue = adValue.getValueMicros() / 1000000.0;
+                    String currency = adValue.getCurrencyCode();
+                    Adjust.getInstance().trackAdRevenue(revenue, currency);
+                    callback.onEarnRevenue(revenue, currency);
                 });
                 callback.onNativeAdLoaded(nativeAd);
             }).withAdListener(new AdListener() {
@@ -1604,7 +1652,10 @@ public class Admob {
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
+                        callback.onEarnRevenue(revenue, currency);
                     });
                 }).withAdListener(new AdListener() {
                     @Override
@@ -1651,7 +1702,10 @@ public class Admob {
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
+                        callback.onEarnRevenue(revenue, currency);
                     });
                 }).withAdListener(new AdListener() {
                     @Override
@@ -1707,7 +1761,10 @@ public class Admob {
                         nativeAd.setOnPaidEventListener(adValue -> {
                             Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                             FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
-                            callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                            double revenue = adValue.getValueMicros() / 1000000.0;
+                            String currency = adValue.getCurrencyCode();
+                            Adjust.getInstance().trackAdRevenue(revenue, currency);
+                            callback.onEarnRevenue(revenue, currency);
                         });
                     }
                 }).withAdListener(new AdListener() {
@@ -1763,7 +1820,10 @@ public class Admob {
                     nativeAd.setOnPaidEventListener(adValue -> {
                         Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                         FirebaseUtil.logPaidAdImpression(context, adValue, listID.get(0), AdType.NATIVE);
-                        callback.onEarnRevenue((long) adValue.getValueMicros(), (String) adValue.getCurrencyCode());
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
+                        callback.onEarnRevenue(revenue, currency);
                     });
                 }
             };
@@ -1869,6 +1929,9 @@ public class Admob {
                 nativeAd.setOnPaidEventListener(adValue -> {
                     Log.d(TAG, "OnPaidEvent getInterstitalAds:" + adValue.getValueMicros());
                     FirebaseUtil.logPaidAdImpression(context, adValue, id, AdType.NATIVE);
+                    double revenue = adValue.getValueMicros() / 1000000.0;
+                    String currency = adValue.getCurrencyCode();
+                    Adjust.getInstance().trackAdRevenue(revenue, currency);
                 });
             }
 
