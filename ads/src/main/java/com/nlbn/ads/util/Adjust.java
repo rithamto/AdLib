@@ -27,9 +27,9 @@ public class Adjust implements Application.ActivityLifecycleCallbacks {
 
     public void init(AdsApplication context, String appToken) {
         this.adsApplication = context;
-        String environment = BuildConfig.DEBUG ? AdjustConfig.ENVIRONMENT_SANDBOX : AdjustConfig.ENVIRONMENT_PRODUCTION;
+        String environment = AppUtil.BUILD_DEBUG ? AdjustConfig.ENVIRONMENT_SANDBOX : AdjustConfig.ENVIRONMENT_PRODUCTION;
         AdjustConfig config = new AdjustConfig(context, appToken, environment);
-        if (BuildConfig.DEBUG) {
+        if (AppUtil.BUILD_DEBUG) {
             config.setLogLevel(LogLevel.VERBOSE);
         }
         com.adjust.sdk.Adjust.initSdk(config);
