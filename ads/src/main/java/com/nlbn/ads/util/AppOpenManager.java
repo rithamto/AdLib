@@ -506,11 +506,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             return;
         }
         isShowingAdResume = true;
-        if (appResumeAd != null) {
-            appResumeAd.setFullScreenContentCallback(fullScreenContentCallbackNew);
-            isShowingAd = true;
-            appResumeAd.show(currentActivity);
-        }
+        appResumeAd.setFullScreenContentCallback(fullScreenContentCallbackNew);
+        isShowingAd = true;
+        appResumeAd.show(currentActivity);
 
     }
 
