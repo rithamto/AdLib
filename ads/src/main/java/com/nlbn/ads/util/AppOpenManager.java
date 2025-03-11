@@ -498,9 +498,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
             };
         AdRequest request = getAdRequest();
-        AppOpenAd.load(
-            myApplication, appResumeAdId, request,
-            AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+        AppOpenAd.load(myApplication, appResumeAdId, request, loadCallback);
     }
 
 
