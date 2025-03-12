@@ -103,7 +103,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     /**
      * Init AppOpenManager
      *
-     * @param application
      */
     public void init(Application application, String appOpenAdId) {
         isInitialized = true;
@@ -575,11 +574,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             return;
         }
 
-//        if (isAdAvailable(true)) {
-//            showAdIfAvailable(true);
-//            return;
-//        }
-
         loadCallback =
             new AppOpenAd.AppOpenAdLoadCallback() {
                 @Override
@@ -590,10 +584,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
                     if (isTimeout) {
                         Log.e(TAG, "onAppOpenAdLoaded: splash timeout");
-//                            if (fullScreenContentCallback != null) {
-//                                fullScreenContentCallback.onAdDismissedFullScreenContent();
-//                                enableScreenContentCallback = false;
-//                            }
                     } else {
                         AppOpenManager.this.splashAd = appOpenAd;
                         splashLoadTime = new Date().getTime();
@@ -709,23 +699,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 dialog = null;
                 dialog = new LoadingAdsDialog(context);
                 dialog.show();
-            } catch (Exception ignored) {
-            }
-            /*this.dismissDialogLoading();
-            if (this.dialog == null) {
-                try {
-                    LoadingAdsDialog dialog = new LoadingAdsDialog(context);
-                    dialog.setCancelable(false);
-                    this.dialog = dialog;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                if (this.dialog != null) {
-                    this.dialog.show();
-                }
-            } catch (Exception e) {}*/
+            } catch (Exception ignored) {}
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -781,7 +755,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
     public void loadOpenAppAdSplash(Context context, String idResumeSplash, long timeDelay, long timeOut, boolean isShowAdIfReady, AdCallback adCallback) {
         this.splashAdId = idResumeSplash;
-        if (!isNetworkConnected(context)) {
+        if (isNetworkConnected(context)) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -832,9 +806,8 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                                 elapsedTime = 0L;
                             }
                             Handler handler1 = new Handler();
-                            Context appOpenAdContext = context;
                             Runnable showAppOpenSplashRunnable = () -> {
-                                AppOpenManager.this.showAppOpenSplash(appOpenAdContext, adCallback);
+                                AppOpenManager.this.showAppOpenSplash(context, adCallback);
                             };
                             handler1.postDelayed(showAppOpenSplashRunnable, elapsedTime);
                         } else {
@@ -849,7 +822,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     public void loadOpenAppAdSplashFloor(Context context, List<String> listIDResume, boolean isShowAdIfReady, AdCallback adCallback) {
-        if (!isNetworkConnected(context)) {
+        if (isNetworkConnected(context)) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -924,7 +897,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
     private boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+        return cm.getActiveNetworkInfo() == null || !cm.getActiveNetworkInfo().isConnected();
     }
 }
 
