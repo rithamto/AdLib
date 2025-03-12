@@ -61,7 +61,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private boolean enableScreenContentCallback = false; // default =  true when use splash & false after show splash
     private boolean disableAdResumeByClickAction = false;
     private final List<Class> disabledAppOpenList;
-    private Class splashActivity;
 
     private AdCallback resumeCallback;
 
@@ -111,7 +110,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         disableAdResumeByClickAction = false;
         this.myApplication = application;
         this.myApplication.registerActivityLifecycleCallbacks(this);
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         this.appResumeAdId = appOpenAdId;
 //        if (!Purchase.getInstance().isPurchased(application.getApplicationContext()) &&
 //                !isAdAvailable(false) && appOpenAdId != null) {
@@ -158,7 +156,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     /**
      * Check app open ads is showing
      *
-     * @return
      */
     public boolean isShowingAd() {
         return isShowingAd;
@@ -167,7 +164,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     /**
      * Disable app open app on specific activity
      *
-     * @param activityClass
      */
     public void disableAppResumeWithActivity(Class activityClass) {
         Log.d(TAG, "disableAppResumeWithActivity: " + activityClass.getName());
@@ -188,7 +184,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     public void setSplashActivity(Class splashActivity, String adId, int timeoutInMillis) {
-        this.splashActivity = splashActivity;
         splashAdId = adId;
         this.splashTimeout = timeoutInMillis;
     }
@@ -225,7 +220,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 
 
                 @Override
-                public void onAdLoaded(AppOpenAd ad) {
+                public void onAdLoaded(@NonNull AppOpenAd ad) {
                     Log.d(TAG, "onAppOpenAdLoaded: isSplash = " + isSplash);
                     if (!isSplash) {
                         AppOpenManager.this.appResumeAd = ad;
@@ -292,18 +287,18 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
         FirebaseAnalytics.getInstance(activity).logEvent(activity.getClass().getSimpleName(), new Bundle());
     }
 
     @Override
-    public void onActivityStarted(Activity activity) {
+    public void onActivityStarted(@NonNull Activity activity) {
         currentActivity = activity;
         Log.d(TAG, "onActivityStarted: " + currentActivity);
     }
 
     @Override
-    public void onActivityResumed(Activity activity) {
+    public void onActivityResumed(@NonNull Activity activity) {
         currentActivity = activity;
         Log.d(TAG, "onActivityResumed: " + currentActivity);
 //        if (splashActivity == null) {
@@ -320,15 +315,15 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     }
 
     @Override
-    public void onActivityStopped(Activity activity) {
+    public void onActivityStopped(@NonNull Activity activity) {
     }
 
     @Override
-    public void onActivityPaused(Activity activity) {
+    public void onActivityPaused(@NonNull Activity activity) {
     }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
     }
 
     @Override
@@ -411,7 +406,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
 
                             @Override
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                                 if (fullScreenContentCallback != null && enableScreenContentCallback) {
                                     fullScreenContentCallback.onAdFailedToShowFullScreenContent(adError);
                                 }
@@ -476,7 +471,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             new AppOpenAd.AppOpenAdLoadCallback() {
 
                 @Override
-                public void onAdLoaded(AppOpenAd ad) {
+                public void onAdLoaded(@NonNull AppOpenAd ad) {
                     AppOpenManager.this.appResumeAd = ad;
                     ad.setOnPaidEventListener(adValue -> {
                         FirebaseUtil.logPaidAdImpression(currentActivity,
@@ -493,8 +488,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     fullScreenContentCallbackNew.onAdFailedToShowFullScreenContent(loadAdError);
                     dismissDialogLoading();
                 }
-
-
             };
         AdRequest request = getAdRequest();
         AppOpenAd.load(myApplication, appResumeAdId, request, loadCallback);
@@ -576,7 +569,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         isTimeout = false;
         enableScreenContentCallback = true;
         if (currentActivity != null) {
-            if (fullScreenContentCallback != null && enableScreenContentCallback) {
+            if (fullScreenContentCallback != null) {
                 fullScreenContentCallback.onAdDismissedFullScreenContent();
             }
             return;
@@ -716,7 +709,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 dialog = null;
                 dialog = new LoadingAdsDialog(context);
                 dialog.show();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
             /*this.dismissDialogLoading();
             if (this.dialog == null) {
@@ -756,7 +749,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                             }
 
                             @Override
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                                 isShowLoadingSplash = true;
                                 // adCallback.onNextAction();
                                 adCallback.onAdFailedToShow(adError);
@@ -870,14 +863,14 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 adCallback.onNextAction();
                 return;
             }
-            if (listIDResume.size() > 0) {
+            if (!listIDResume.isEmpty()) {
                 Log.e("AppOpenManager", "load ID :" + listIDResume.get(0));
             }
-            if (listIDResume.size() < 1) {
+            if (listIDResume.isEmpty()) {
                 adCallback.onAdFailedToLoad(null);
                 adCallback.onNextAction();
             }
-            if (AppPurchase.getInstance().isPurchased(context) || listIDResume.size() < 1) {
+            if (AppPurchase.getInstance().isPurchased(context) || listIDResume.isEmpty()) {
                 adCallback.onNextAction();
             } else {
                 AdRequest adRequest = getAdRequest();
@@ -887,7 +880,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         super.onAdFailedToLoad(loadAdError);
                         // adCallback.onAdFailedToLoad(loadAdError);
                         listIDResume.remove(0);
-                        if (listIDResume.size() == 0) {
+                        if (listIDResume.isEmpty()) {
                             adCallback.onAdFailedToLoad(null);
                             adCallback.onNextAction();
                         } else {
