@@ -68,20 +68,6 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private static final int TIMEOUT_MSG = 11;
 
     private Handler timeoutHandler;
-
-    //            = new Handler(msg -> {
-//        if (msg.what == TIMEOUT_MSG) {
-//
-//                Log.e(TAG, "timeout load ad ");
-//                isTimeout = true;
-//                enableScreenContentCallback = false;
-//                if (fullScreenContentCallback != null) {
-//                    fullScreenContentCallback.onAdDismissedFullScreenContent();
-//                }
-//
-//        }
-//        return false;
-//    });
     public void setSplashAdId(String splashAdId) {
         this.splashAdId = splashAdId;
     }
@@ -300,17 +286,25 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     public void onActivityResumed(@NonNull Activity activity) {
         currentActivity = activity;
         Log.d(TAG, "onActivityResumed: " + currentActivity);
-//        if (splashActivity == null) {
-//            if (!activity.getClass().getName().equals(AdActivity.class.getName())) {
-//                Log.d(TAG, "onActivityResumed 1: with " + activity.getClass().getName());
-//                fetchAd(false);
-//            }
-//        } else {
-//            if (!activity.getClass().getName().equals(splashActivity.getName()) && !activity.getClass().getName().equals(AdActivity.class.getName())) {
-//                Log.d(TAG, "onActivityResumed 2: with " + activity.getClass().getName());
-//                fetchAd(false);
-//            }
-//        }
+        if (!isAppResumeEnabled) {
+            Log.d(TAG, "onResume: app resume is disabled");
+            return;
+        }
+
+        if (isInterstitialShowing) {
+            Log.d(TAG, "onResume: interstitial is showing");
+            return;
+        }
+
+        if (disableAdResumeByClickAction) {
+            Log.d(TAG, "onResume:ad resume disable ad by action");
+            disableAdResumeByClickAction = false;
+            return;
+        }
+
+        if (isShowingAdResume) return;
+        Log.d(TAG, "onStart: show resume ads :" + currentActivity.getClass().getName());
+        loadAdResume();
     }
 
     @Override
@@ -639,46 +633,46 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         }
     };
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void onResume() {
-        if (!isAppResumeEnabled) {
-            Log.d(TAG, "onResume: app resume is disabled");
-            return;
-        }
+//    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+//    public void onResume() {
+//        if (!isAppResumeEnabled) {
+//            Log.d(TAG, "onResume: app resume is disabled");
+//            return;
+//        }
+//
+//        if (isInterstitialShowing) {
+//            Log.d(TAG, "onResume: interstitial is showing");
+//            return;
+//        }
+//
+//        if (disableAdResumeByClickAction) {
+//            Log.d(TAG, "onResume:ad resume disable ad by action");
+//            disableAdResumeByClickAction = false;
+//            return;
+//        }
+//
+//        for (Class activity : disabledAppOpenList) {
+//            if (activity.getName().equals(currentActivity.getClass().getName())) {
+//                Log.d(TAG, "onStart: activity is disabled");
+//                return;
+//            }
+//        }
+//
+//        if (isShowingAdResume) return;
+//        Log.d(TAG, "onStart: show resume ads :" + currentActivity.getClass().getName());
+//        loadAdResume();
+//    }
 
-        if (isInterstitialShowing) {
-            Log.d(TAG, "onResume: interstitial is showing");
-            return;
-        }
-
-        if (disableAdResumeByClickAction) {
-            Log.d(TAG, "onResume:ad resume disable ad by action");
-            disableAdResumeByClickAction = false;
-            return;
-        }
-
-        for (Class activity : disabledAppOpenList) {
-            if (activity.getName().equals(currentActivity.getClass().getName())) {
-                Log.d(TAG, "onStart: activity is disabled");
-                return;
-            }
-        }
-
-        if (isShowingAdResume) return;
-        Log.d(TAG, "onStart: show resume ads :" + currentActivity.getClass().getName());
-        loadAdResume();
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    public void onStop() {
-        Log.d(TAG, "onStop: app stop");
-
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void onPause() {
-        Log.d(TAG, "onPause");
-    }
+//    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+//    public void onStop() {
+//        Log.d(TAG, "onStop: app stop");
+//
+//    }
+//
+//    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+//    public void onPause() {
+//        Log.d(TAG, "onPause");
+//    }
 
     private void dismissDialogLoading() {
         if (dialog != null) {
