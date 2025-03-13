@@ -55,7 +55,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
     private int splashTimeout = 0;
 
     private boolean isInitialized = false;// on  - off ad resume on app
-    public boolean isAppResumeEnabled = true;
+    private boolean isAppResumeEnabled = true;
     private boolean isInterstitialShowing = false;
     private boolean isShowingAdResume = false;
     private boolean enableScreenContentCallback = false; // default =  true when use splash & false after show splash
@@ -214,61 +214,52 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             return;
         }
 
-        loadCallback =
-                new AppOpenAd.AppOpenAdLoadCallback() {
+        loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
 
-                    /**
-                     * Called when an app open ad has loaded.
-                     *
-                     * @param ad the loaded app open ad.
-                     */
-
-
-                    @Override
-                    public void onAdLoaded(AppOpenAd ad) {
-                        Log.d(TAG, "onAppOpenAdLoaded: isSplash = " + isSplash);
-                        if (!isSplash) {
-                            AppOpenManager.this.appResumeAd = ad;
-                            AppOpenManager.this.appResumeAd.setOnPaidEventListener(adValue -> {
-                            });
-                            AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
-                        } else {
-                            AppOpenManager.this.splashAd = ad;
-                            AppOpenManager.this.splashAd.setOnPaidEventListener(adValue -> {
-                                FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(),
-                                        adValue,
-                                        ad.getAdUnitId(),
-                                        AdType.APP_OPEN);
-                                double revenue = adValue.getValueMicros() / 1000000.0;
-                                String currency = adValue.getCurrencyCode();
-                                Adjust.getInstance().trackAdRevenue(revenue, currency);
-                            });
-                            AppOpenManager.this.splashLoadTime = (new Date()).getTime();
-                        }
+            /**
+             * Called when an app open ad has loaded.
+             *
+             * @param ad the loaded app open ad.
+             */
 
 
-                    }
+            @Override
+            public void onAdLoaded(AppOpenAd ad) {
+                Log.d(TAG, "onAppOpenAdLoaded: isSplash = " + isSplash);
+                if (!isSplash) {
+                    AppOpenManager.this.appResumeAd = ad;
+                    AppOpenManager.this.appResumeAd.setOnPaidEventListener(adValue -> {
+                    });
+                    AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
+                } else {
+                    AppOpenManager.this.splashAd = ad;
+                    AppOpenManager.this.splashAd.setOnPaidEventListener(adValue -> {
+                        FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, ad.getAdUnitId(), AdType.APP_OPEN);
+                    });
+                    AppOpenManager.this.splashLoadTime = (new Date()).getTime();
+                }
 
 
-                    /**
-                     * Called when an app open ad has failed to load.
-                     *
-                     * @param loadAdError the error.
-                     */
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Log.d(TAG, "onAppOpenAdFailedToLoad: isSplash" + isSplash + " message " + loadAdError.getMessage());
+            }
+
+
+            /**
+             * Called when an app open ad has failed to load.
+             *
+             * @param loadAdError the error.
+             */
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                Log.d(TAG, "onAppOpenAdFailedToLoad: isSplash" + isSplash + " message " + loadAdError.getMessage());
 //                        if (isSplash && fullScreenContentCallback!=null)
 //                            fullScreenContentCallback.onAdDismissedFullScreenContent();
-                        dismissDialogLoading();
-                    }
+                dismissDialogLoading();
+            }
 
 
-                };
+        };
         AdRequest request = getAdRequest();
-        AppOpenAd.load(
-                myApplication, isSplash ? splashAdId : appResumeAdId, request,
-                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+        AppOpenAd.load(myApplication, isSplash ? splashAdId : appResumeAdId, request, loadCallback);
     }
 
     /**
@@ -291,8 +282,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         long loadTime = isSplash ? splashLoadTime : appResumeLoadTime;
         boolean wasLoadTimeLessThanNHoursAgo = wasLoadTimeLessThanNHoursAgo(loadTime, 4);
         Log.d(TAG, "isAdAvailable: " + wasLoadTimeLessThanNHoursAgo);
-        return (isSplash ? splashAd != null : appResumeAd != null)
-                && wasLoadTimeLessThanNHoursAgo;
+        return (isSplash ? splashAd != null : appResumeAd != null) && wasLoadTimeLessThanNHoursAgo;
     }
 
     @Override
@@ -400,48 +390,47 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             final Dialog finalDialog = dialog;
             new Handler().postDelayed(() -> {
                 if (splashAd != null) {
-                    splashAd.setFullScreenContentCallback(
-                            new FullScreenContentCallback() {
-                                @Override
-                                public void onAdDismissedFullScreenContent() {
-                                    // Set the reference to null so isAdAvailable() returns false.
-                                    appResumeAd = null;
-                                    if (fullScreenContentCallback != null && enableScreenContentCallback) {
-                                        fullScreenContentCallback.onAdDismissedFullScreenContent();
-                                        enableScreenContentCallback = false;
-                                    }
-                                    isShowingAd = false;
-                                    fetchAd(true);
-                                }
+                    splashAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Set the reference to null so isAdAvailable() returns false.
+                            appResumeAd = null;
+                            if (fullScreenContentCallback != null && enableScreenContentCallback) {
+                                fullScreenContentCallback.onAdDismissedFullScreenContent();
+                                enableScreenContentCallback = false;
+                            }
+                            isShowingAd = false;
+                            fetchAd(true);
+                        }
 
-                                @Override
-                                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                    if (fullScreenContentCallback != null && enableScreenContentCallback) {
-                                        fullScreenContentCallback.onAdFailedToShowFullScreenContent(adError);
-                                    }
-                                }
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(AdError adError) {
+                            if (fullScreenContentCallback != null && enableScreenContentCallback) {
+                                fullScreenContentCallback.onAdFailedToShowFullScreenContent(adError);
+                            }
+                        }
 
-                                @Override
-                                public void onAdShowedFullScreenContent() {
-                                    if (fullScreenContentCallback != null && enableScreenContentCallback) {
-                                        fullScreenContentCallback.onAdShowedFullScreenContent();
-                                    }
-                                    isShowingAd = true;
-                                    splashAd = null;
-                                }
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            if (fullScreenContentCallback != null && enableScreenContentCallback) {
+                                fullScreenContentCallback.onAdShowedFullScreenContent();
+                            }
+                            isShowingAd = true;
+                            splashAd = null;
+                        }
 
 
-                                @Override
-                                public void onAdClicked() {
-                                    super.onAdClicked();
-                                    if (currentActivity != null) {
-                                        FirebaseUtil.logClickAdsEvent(currentActivity, splashAdId);
-                                        if (fullScreenContentCallback != null) {
-                                            fullScreenContentCallback.onAdClicked();
-                                        }
-                                    }
+                        @Override
+                        public void onAdClicked() {
+                            super.onAdClicked();
+                            if (currentActivity != null) {
+                                FirebaseUtil.logClickAdsEvent(currentActivity, splashAdId);
+                                if (fullScreenContentCallback != null) {
+                                    fullScreenContentCallback.onAdClicked();
                                 }
-                            });
+                            }
+                        }
+                    });
                     splashAd.show(currentActivity);
                 }
 
@@ -476,37 +465,28 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
             e.printStackTrace();
         }
 
-        loadCallback =
-                new AppOpenAd.AppOpenAdLoadCallback() {
+        loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
 
-                    @Override
-                    public void onAdLoaded(AppOpenAd ad) {
-                        AppOpenManager.this.appResumeAd = ad;
-                        ad.setOnPaidEventListener(adValue -> {
-                            FirebaseUtil.logPaidAdImpression(currentActivity,
-                                    adValue,
-                                    ad.getAdUnitId(),
-                                    AdType.APP_OPEN);
-                            double revenue = adValue.getValueMicros() / 1000000.0;
-                            String currency = adValue.getCurrencyCode();
-                            Adjust.getInstance().trackAdRevenue(revenue, currency);
-                        });
-                        AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
-                        showResumeAds();
-                    }
+            @Override
+            public void onAdLoaded(AppOpenAd ad) {
+                AppOpenManager.this.appResumeAd = ad;
+                ad.setOnPaidEventListener(adValue -> {
+                    FirebaseUtil.logPaidAdImpression(currentActivity, adValue, ad.getAdUnitId(), AdType.APP_OPEN);
+                });
+                AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
+                showResumeAds();
+            }
 
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        fullScreenContentCallbackNew.onAdFailedToShowFullScreenContent(loadAdError);
-                        dismissDialogLoading();
-                    }
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                fullScreenContentCallbackNew.onAdFailedToShowFullScreenContent(loadAdError);
+                dismissDialogLoading();
+            }
 
 
-                };
+        };
         AdRequest request = getAdRequest();
-        AppOpenAd.load(
-                myApplication, appResumeAdId, request,
-                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+        AppOpenAd.load(myApplication, appResumeAdId, request, loadCallback);
     }
 
 
@@ -598,60 +578,51 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
 //            return;
 //        }
 
-        loadCallback =
-                new AppOpenAd.AppOpenAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
-                        Log.d(TAG, "onAppOpenAdLoaded: splash");
+        loadCallback = new AppOpenAd.AppOpenAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
+                Log.d(TAG, "onAppOpenAdLoaded: splash");
 
-                        timeoutHandler.removeCallbacks(runnableTimeout);
+                timeoutHandler.removeCallbacks(runnableTimeout);
 
-                        if (isTimeout) {
-                            Log.e(TAG, "onAppOpenAdLoaded: splash timeout");
+                if (isTimeout) {
+                    Log.e(TAG, "onAppOpenAdLoaded: splash timeout");
 //                            if (fullScreenContentCallback != null) {
 //                                fullScreenContentCallback.onAdDismissedFullScreenContent();
 //                                enableScreenContentCallback = false;
 //                            }
-                        } else {
-                            AppOpenManager.this.splashAd = appOpenAd;
-                            splashLoadTime = new Date().getTime();
-                            appOpenAd.setOnPaidEventListener(adValue -> {
-                                FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(),
-                                        adValue,
-                                        appOpenAd.getAdUnitId(),
-                                        AdType.APP_OPEN);
-                                double revenue = adValue.getValueMicros() / 1000000.0;
-                                String currency = adValue.getCurrencyCode();
-                                Adjust.getInstance().trackAdRevenue(revenue, currency);
-                            });
+                } else {
+                    AppOpenManager.this.splashAd = appOpenAd;
+                    splashLoadTime = new Date().getTime();
+                    appOpenAd.setOnPaidEventListener(adValue -> {
+                        FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, appOpenAd.getAdUnitId(), AdType.APP_OPEN);
+                    });
 
-                            showAdIfAvailable(true);
-                        }
-                    }
+                    showAdIfAvailable(true);
+                }
+            }
 
-                    /**
-                     * Called when an app open ad has failed to load.
-                     *
-                     * @param loadAdError the error.
-                     */
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Log.e(TAG, "onAppOpenAdFailedToLoad: splash " + loadAdError.getMessage());
-                        if (isTimeout) {
-                            Log.e(TAG, "onAdFailedToLoad: splash timeout");
-                            return;
-                        }
-                        if (fullScreenContentCallback != null && enableScreenContentCallback) {
-                            fullScreenContentCallback.onAdDismissedFullScreenContent();
-                            enableScreenContentCallback = false;
-                        }
-                    }
+            /**
+             * Called when an app open ad has failed to load.
+             *
+             * @param loadAdError the error.
+             */
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                Log.e(TAG, "onAppOpenAdFailedToLoad: splash " + loadAdError.getMessage());
+                if (isTimeout) {
+                    Log.e(TAG, "onAdFailedToLoad: splash timeout");
+                    return;
+                }
+                if (fullScreenContentCallback != null && enableScreenContentCallback) {
+                    fullScreenContentCallback.onAdDismissedFullScreenContent();
+                    enableScreenContentCallback = false;
+                }
+            }
 
-                };
+        };
         AdRequest request = getAdRequest();
-        AppOpenAd.load(
-                myApplication, splashAdId, request,
-                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
+        AppOpenAd.load(myApplication, splashAdId, request, loadCallback);
 
         if (splashTimeout > 0) {
             timeoutHandler = new Handler();
@@ -840,22 +811,10 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         handler.removeCallbacks(timeOutRunnable);
                         AppOpenManager.this.splashAd = appOpenAd;
                         AppOpenManager.this.splashAd.setOnPaidEventListener((adValue) -> {
-                            FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(),
-                                    adValue,
-                                    appOpenAd.getAdUnitId(),
-                                    AdType.APP_OPEN);
-                            double revenue = adValue.getValueMicros() / 1000000.0;
-                            String currency = adValue.getCurrencyCode();
-                            Adjust.getInstance().trackAdRevenue(revenue, currency);
+                            //log value
                         });
                         appOpenAd.setOnPaidEventListener(adValue -> {
-                            FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(),
-                                    adValue,
-                                    appOpenAd.getAdUnitId(),
-                                    AdType.APP_OPEN);
-                            double revenue = adValue.getValueMicros() / 1000000.0;
-                            String currency = adValue.getCurrencyCode();
-                            Adjust.getInstance().trackAdRevenue(revenue, currency);
+                            FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, appOpenAd.getAdUnitId(), AdType.APP_OPEN);
                         });
                         if (isShowAdIfReady) {
                             long elapsedTime = System.currentTimeMillis() - currentTimeMillis;
@@ -873,7 +832,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         }
                     }
                 };
-                AppOpenAd.load(context, adUnitId, adRequest, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, appOpenAdLoadCallback);
+                AppOpenAd.load(context, adUnitId, adRequest, appOpenAdLoadCallback);
             }
         }
 
@@ -924,13 +883,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         super.onAdLoaded(appOpenAd);
                         AppOpenManager.this.splashAd = appOpenAd;
                         AppOpenManager.this.splashAd.setOnPaidEventListener((adValue) -> {
-                            FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(),
-                                    adValue,
-                                    appOpenAd.getAdUnitId(),
-                                    AdType.APP_OPEN);
-                            double revenue = adValue.getValueMicros() / 1000000.0;
-                            String currency = adValue.getCurrencyCode();
-                            Adjust.getInstance().trackAdRevenue(revenue, currency);
+                            FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, appOpenAd.getAdUnitId(), AdType.APP_OPEN);
                         });
                         if (isShowAdIfReady) {
                             AppOpenManager.this.showAppOpenSplash(context, adCallback);
@@ -939,7 +892,7 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         }
                     }
                 };
-                AppOpenAd.load(context, listIDResume.get(0), adRequest, AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, appOpenAdLoadCallback);
+                AppOpenAd.load(context, listIDResume.get(0), adRequest, appOpenAdLoadCallback);
             }
         }
     }
@@ -961,4 +914,3 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
-
