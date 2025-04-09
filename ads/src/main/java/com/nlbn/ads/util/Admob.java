@@ -2005,6 +2005,7 @@ public class Admob {
 
     /* ============================= END GET  INFO DEVICE  ==========================================*/
     private boolean isNetworkConnected() {
+        if (context == null) return false;
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable();
     }
