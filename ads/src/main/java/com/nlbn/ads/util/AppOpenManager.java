@@ -229,12 +229,18 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 if (!isSplash) {
                     AppOpenManager.this.appResumeAd = ad;
                     AppOpenManager.this.appResumeAd.setOnPaidEventListener(adValue -> {
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
                     });
                     AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
                 } else {
                     AppOpenManager.this.splashAd = ad;
                     AppOpenManager.this.splashAd.setOnPaidEventListener(adValue -> {
                         FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, ad.getAdUnitId(), AdType.APP_OPEN);
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
                     });
                     AppOpenManager.this.splashLoadTime = (new Date()).getTime();
                 }
@@ -472,6 +478,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                 AppOpenManager.this.appResumeAd = ad;
                 ad.setOnPaidEventListener(adValue -> {
                     FirebaseUtil.logPaidAdImpression(currentActivity, adValue, ad.getAdUnitId(), AdType.APP_OPEN);
+                    double revenue = adValue.getValueMicros() / 1000000.0;
+                    String currency = adValue.getCurrencyCode();
+                    Adjust.getInstance().trackAdRevenue(revenue, currency);
                 });
                 AppOpenManager.this.appResumeLoadTime = (new Date()).getTime();
                 showResumeAds();
@@ -596,6 +605,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                     splashLoadTime = new Date().getTime();
                     appOpenAd.setOnPaidEventListener(adValue -> {
                         FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, appOpenAd.getAdUnitId(), AdType.APP_OPEN);
+                        double revenue = adValue.getValueMicros() / 1000000.0;
+                        String currency = adValue.getCurrencyCode();
+                        Adjust.getInstance().trackAdRevenue(revenue, currency);
                     });
 
                     showAdIfAvailable(true);
@@ -818,6 +830,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         });
                         appOpenAd.setOnPaidEventListener(adValue -> {
                             FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, appOpenAd.getAdUnitId(), AdType.APP_OPEN);
+                            double revenue = adValue.getValueMicros() / 1000000.0;
+                            String currency = adValue.getCurrencyCode();
+                            Adjust.getInstance().trackAdRevenue(revenue, currency);
                         });
                         if (isShowAdIfReady) {
                             long elapsedTime = System.currentTimeMillis() - currentTimeMillis;
@@ -887,6 +902,9 @@ public class AppOpenManager implements Application.ActivityLifecycleCallbacks, L
                         AppOpenManager.this.splashAd = appOpenAd;
                         AppOpenManager.this.splashAd.setOnPaidEventListener((adValue) -> {
                             FirebaseUtil.logPaidAdImpression(myApplication.getApplicationContext(), adValue, appOpenAd.getAdUnitId(), AdType.APP_OPEN);
+                            double revenue = adValue.getValueMicros() / 1000000.0;
+                            String currency = adValue.getCurrencyCode();
+                            Adjust.getInstance().trackAdRevenue(revenue, currency);
                         });
                         if (isShowAdIfReady) {
                             AppOpenManager.this.showAppOpenSplash(context, adCallback);
